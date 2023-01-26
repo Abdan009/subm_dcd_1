@@ -156,26 +156,143 @@ class _DetailRestaurantUiState extends State<DetailRestaurantUi> {
           ];
         },
         body: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: defaultMargin),
           children: [
-            const SizedBox(
-              height: 20,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: defaultMargin),
+              child: Column(
+                children: [
+                  Text(
+                    widget.restaurant.description,
+                    style: textTheme(context).caption,
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                ],
+              ),
             ),
-            // Text(
-            //   "Deskripsi",
-            //   style: textTheme(context)
-            //       .bodyText1!
-            //       .copyWith(fontWeight: FontWeight.bold),
-            // ),
-            // const SizedBox(
-            //   height: 10,
-            // ),
-            Text(
-              widget.restaurant.description,
-              style: textTheme(context).caption,
+            _ShowMenuWidget.drinksMenu(drinkMenu: widget.restaurant.menus.drinks),
+
+            const SizedBox(
+              height: 10,
+            ),
+            _ShowMenuWidget.foodMenu(foodMenu: widget.restaurant.menus.foods),
+            const SizedBox(
+              height: 10,
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ShowMenuWidget extends StatelessWidget {
+  List<Drink>? drinkMenu;
+  List<Food>? foodMenu;
+  _ShowMenuWidget({Key? key}) : super(key: key);
+
+  _ShowMenuWidget.drinksMenu({
+    required this.drinkMenu,
+  });
+
+  _ShowMenuWidget.foodMenu({
+    required this.foodMenu,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return (drinkMenu == null && foodMenu == null)
+        ? const SizedBox()
+        : Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: defaultMargin),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      (drinkMenu != null) ? "Menu Minuman" : "Menu Makanan",
+                      style: textTheme(context)
+                          .bodyText1!
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        "Lihat semua >",
+                        style: textTheme(context).button,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: defaultMargin),
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: List.generate(
+                    (drinkMenu != null) ? drinkMenu!.length : foodMenu!.length,
+                    (index) => _manuItemWidget(
+                      context,
+                      image: (drinkMenu != null)
+                          ? 'assets/drink.png'
+                          : 'assets/food.png',
+                      nameItem: (drinkMenu != null)
+                          ? drinkMenu![index].name
+                          : foodMenu![index].name,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+  }
+
+  Container _manuItemWidget(
+    BuildContext context, {
+    required String nameItem,
+    required String image,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      // height: widthLayout(context) / 4,
+      width: widthLayout(context) / 4,
+      constraints: const BoxConstraints(maxWidth: 100),
+      margin: const EdgeInsets.only(right: 10, top: 10, bottom: 10),
+      decoration: BoxDecoration(
+          color: primaryColor,
+          borderRadius: BorderRadius.circular(5),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                offset: const Offset(0, 0),
+                blurRadius: 1)
+          ]),
+      child: Column(
+        children: [
+          SizedBox(
+            height: 50,
+            child: Image.asset(
+              image,
+              width: 30,
+              height: 30,
+            ),
+          ),
+          Text(
+            nameItem,
+            style: textTheme(context)
+                .caption!
+                .copyWith(fontWeight: FontWeight.w600),
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          )
+        ],
       ),
     );
   }
