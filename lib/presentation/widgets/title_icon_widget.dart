@@ -5,6 +5,7 @@ class TitleIconWidget extends StatelessWidget {
   final String title;
   final IconData icon;
   final TextStyle? titleStyle;
+  final double sizeIcon;
 
   const TitleIconWidget(
     this.context, {
@@ -12,6 +13,7 @@ class TitleIconWidget extends StatelessWidget {
     required this.title,
     required this.icon,
     this.titleStyle,
+    this.sizeIcon =15
   }) : super(key: key);
 
   @override
@@ -21,17 +23,15 @@ class TitleIconWidget extends StatelessWidget {
         Icon(
           icon,
           color: secondaryColor,
-          size: 15,
+          size: sizeIcon,
         ),
         const SizedBox(
           width: 5,
         ),
-        Expanded(
-          child: Text(
+        Text(
             title,
             style: titleStyle ?? textTheme(context).caption,
           ),
-        )
       ],
     );
   }

@@ -21,11 +21,20 @@ class _DetailRestaurantUiState extends State<DetailRestaurantUi> {
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(
+      () {
+        setState(() {
+          isSliverAppBarExpanded = _scrollController.hasClients &&
+              _scrollController.offset > kExpandedHeight - kToolbarHeight;
+        });
+      },
+    );
   }
 
-  bool get _isSliverAppBarExpanded {
-    return _scrollController.hasClients &&
-        _scrollController.offset > kExpandedHeight - kToolbarHeight;
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
   }
 
   @override
@@ -40,11 +49,11 @@ class _DetailRestaurantUiState extends State<DetailRestaurantUi> {
               pinned: true,
               expandedHeight: kExpandedHeight,
               toolbarHeight: 50,
-              title: (_isSliverAppBarExpanded)
+              title: (isSliverAppBarExpanded)
                   ? Text(
                       widget.restaurant.name,
                       style: textTheme(context).subtitle1!.copyWith(
-                          color: primaryColor, fontWeight: FontWeight.w500),
+                          color: primaryColor, fontWeight: FontWeight.w600),
                     )
                   : null,
               flexibleSpace: FlexibleSpaceBar(
@@ -54,29 +63,32 @@ class _DetailRestaurantUiState extends State<DetailRestaurantUi> {
                   child: Stack(
                     children: [
                       GestureDetector(
-                        onTap: (){
-                             final snackBar = SnackBar(
-                              content: const Text('Hi, I am a SnackBar!'),
-                              backgroundColor: (Colors.black12),
-                              action: SnackBarAction(
-                                label: 'dismiss',
-                                onPressed: () {},
-                              ),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
+                        onTap: () {
+                          final snackBar = SnackBar(
+                            content: const Text('Hi, I am a SnackBar!'),
+                            backgroundColor: (Colors.black12),
+                            action: SnackBarAction(
+                              label: 'dismiss',
+                              onPressed: () {},
+                            ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         },
-                        child: Container(
-                          height: 280,
-                          decoration: BoxDecoration(
-                            color: Colors.black,
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              colorFilter: new ColorFilter.mode(
-                                  Colors.grey.withOpacity(0.5),
-                                  BlendMode.dstATop),
-                              alignment: Alignment.topCenter,
-                              image: NetworkImage(widget.restaurant.pictureId),
+                        child: Hero(
+                          tag: widget.restaurant.pictureId,
+                          child: Container(
+                            height: 280,
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                colorFilter: ColorFilter.mode(
+                                    Colors.grey.withOpacity(0.5),
+                                    BlendMode.dstATop),
+                                alignment: Alignment.topCenter,
+                                image:
+                                    NetworkImage(widget.restaurant.pictureId),
+                              ),
                             ),
                           ),
                         ),
@@ -100,23 +112,37 @@ class _DetailRestaurantUiState extends State<DetailRestaurantUi> {
                                     offset: const Offset(0, 2),
                                     blurRadius: 4)
                               ]),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          child: Row(
                             children: [
-                              Text(
-                                widget.restaurant.name,
-                                style: textTheme(context)
-                                    .bodyText1!
-                                    .copyWith(fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(
-                                height: 5,
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      widget.restaurant.name,
+                                      style: textTheme(context)
+                                          .bodyText1!
+                                          .copyWith(
+                                              fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    TitleIconWidget(
+                                      context,
+                                      title: widget.restaurant.city,
+                                      icon: Icons.location_pin,
+                                    ),
+                                  ],
+                                ),
                               ),
                               TitleIconWidget(
                                 context,
-                                title: widget.restaurant.city,
-                                icon: Icons.location_pin,
+                                title: widget.restaurant.rating.toString(),
+                                icon: Icons.star,
+                                sizeIcon: 30,
+                                titleStyle: textTheme(context).headline6,
                               ),
                             ],
                           ),
@@ -125,13 +151,6 @@ class _DetailRestaurantUiState extends State<DetailRestaurantUi> {
                     ],
                   ),
                 ),
-                // flexibleSpace: FlexibleSpaceBar(
-                //   expandedTitleScale: 1.6,
-                //   background: Image.network(
-                //     widget.restaurant.pictureId,
-                //     fit: BoxFit.cover,
-                //   ),
-                // ),
               ),
             )
           ];
@@ -142,15 +161,15 @@ class _DetailRestaurantUiState extends State<DetailRestaurantUi> {
             const SizedBox(
               height: 20,
             ),
-            Text(
-              "Deskripsi",
-              style: textTheme(context)
-                  .bodyText1!
-                  .copyWith(fontWeight: FontWeight.bold),
-            ),
-            SizedBox(
-              height: 10,
-            ),
+            // Text(
+            //   "Deskripsi",
+            //   style: textTheme(context)
+            //       .bodyText1!
+            //       .copyWith(fontWeight: FontWeight.bold),
+            // ),
+            // const SizedBox(
+            //   height: 10,
+            // ),
             Text(
               widget.restaurant.description,
               style: textTheme(context).caption,
