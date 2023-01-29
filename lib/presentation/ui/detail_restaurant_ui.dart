@@ -14,7 +14,7 @@ class DetailRestaurantUi extends StatefulWidget {
 }
 
 class _DetailRestaurantUiState extends State<DetailRestaurantUi> {
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   final kExpandedHeight = 300.0;
   bool isSliverAppBarExpanded = false;
 
@@ -193,6 +193,7 @@ class _DetailRestaurantUiState extends State<DetailRestaurantUi> {
   }
 }
 
+// ignore: must_be_immutable
 class _ShowMenuWidget extends StatelessWidget {
   List<Drink>? drinkMenu;
   List<Food>? foodMenu;

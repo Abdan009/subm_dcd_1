@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:restaurant_dicoding/common/methods.dart';
 import 'package:restaurant_dicoding/data/models/models.dart';
 
