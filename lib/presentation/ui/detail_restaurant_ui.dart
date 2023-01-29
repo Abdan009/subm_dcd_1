@@ -95,57 +95,63 @@ class _DetailRestaurantUiState extends State<DetailRestaurantUi> {
                       ),
                       Align(
                         alignment: Alignment.bottomCenter,
-                        child: Container(
-                          height: 100,
-                          width: MediaQuery.of(context).size.width,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 30, vertical: 20),
-                          margin: const EdgeInsets.symmetric(
-                                  horizontal: defaultMargin)
-                              .copyWith(bottom: 5),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(30),
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.black.withOpacity(0.2),
-                                    offset: const Offset(0, 2),
-                                    blurRadius: 4)
-                              ]),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      widget.restaurant.name,
-                                      style: textTheme(context)
-                                          .bodyText1!
-                                          .copyWith(
-                                              fontWeight: FontWeight.bold),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 30, vertical: 20),
+                              margin: const EdgeInsets.symmetric(
+                                      horizontal: defaultMargin)
+                                  .copyWith(bottom: 5),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(30),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.black.withOpacity(0.2),
+                                        offset: const Offset(0, 2),
+                                        blurRadius: 4)
+                                  ]),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          widget.restaurant.name,
+                                          style: textTheme(context)
+                                              .bodyText2!
+                                              .copyWith(
+                                                  fontWeight: FontWeight.bold),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        TitleIconWidget(
+                                          context,
+                                          title: widget.restaurant.city,
+                                          icon: Icons.location_pin,
+                                        ),
+                                      ],
                                     ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    TitleIconWidget(
-                                      context,
-                                      title: widget.restaurant.city,
-                                      icon: Icons.location_pin,
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                  TitleIconWidget(
+                                    context,
+                                    title: widget.restaurant.rating.toString(),
+                                    icon: Icons.star,
+                                    sizeIcon: 20,
+                                    titleStyle: textTheme(context).subtitle1,
+                                  ),
+                                ],
                               ),
-                              TitleIconWidget(
-                                context,
-                                title: widget.restaurant.rating.toString(),
-                                icon: Icons.star,
-                                sizeIcon: 30,
-                                titleStyle: textTheme(context).headline6,
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -178,7 +184,7 @@ class _DetailRestaurantUiState extends State<DetailRestaurantUi> {
             ),
             _ShowMenuWidget.foodMenu(foodMenu: widget.restaurant.menus.foods),
             const SizedBox(
-              height: 10,
+              height: 40,
             ),
           ],
         ),

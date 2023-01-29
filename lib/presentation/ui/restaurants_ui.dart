@@ -79,7 +79,7 @@ class _RestaurantItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: (widthLayout(context) * 0.25) / 1.2,
+      // height: (widthLayout(context) * 0.25) / 1.2,
       child: MaterialButton(
         padding: const EdgeInsets.symmetric(horizontal: defaultMargin)
             .copyWith(bottom: 15),
@@ -125,8 +125,10 @@ class _RestaurantItemWidget extends StatelessWidget {
                       Text(
                         restaurantItem.name,
                         style: textTheme(context)
-                            .bodyText1!
+                            .bodyText2!
                             .copyWith(fontWeight: FontWeight.bold),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(
                         height: 5,
