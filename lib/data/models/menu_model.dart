@@ -1,22 +1,16 @@
-
 part of 'models.dart';
 
 class Menu {
-    Menu({
-        required this.foods,
-        required this.drinks,
-    });
+  final List<MenuItem> foods;
+  final List<MenuItem> drinks;
 
-    List<Food> foods;
-    List<Drink> drinks;
+  Menu({
+     this.foods = const [],
+     this.drinks  = const [],
+  });
 
-    factory Menu.fromJson(Map<String, dynamic> json) => Menu(
-        foods: List<Food>.from(json["foods"].map((x) => Food.fromJson(x))),
-        drinks: List<Drink>.from(json["drinks"].map((x) => Drink.fromJson(x))),
-    );
-
-    Map<String, dynamic> toJson() => {
-        "foods": List<dynamic>.from(foods.map((x) => x.toJson())),
-        "drinks": List<dynamic>.from(drinks.map((x) => x.toJson())),
-    };
+  factory Menu.fromJson(Map<String, dynamic> json) => Menu(
+        foods: List<MenuItem>.from(json["foods"].map((x) => MenuItem.fromJson(x, MenuItemType.food))),
+        drinks: List<MenuItem>.from(json["drinks"].map((x) => MenuItem.fromJson(x, MenuItemType.drink))),
+      );
 }

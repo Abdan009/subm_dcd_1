@@ -22,7 +22,7 @@ class TitleIconWidget extends StatelessWidget {
       children: [
         Icon(
           icon,
-          color: secondaryColor,
+          color: primaryColor,
           size: sizeIcon,
         ),
         const SizedBox(
@@ -30,7 +30,7 @@ class TitleIconWidget extends StatelessWidget {
         ),
         Text(
             title,
-            style: titleStyle ?? textTheme(context).caption,
+            style: titleStyle ?? textTheme(context).bodySmall,
           ),
       ],
     );

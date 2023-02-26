@@ -3,7 +3,7 @@ part of 'ui.dart';
 class RestaurantsUi extends StatelessWidget {
   const RestaurantsUi({super.key});
 
-  static String routeName = "restaurant_ui";
+  static const String routeName = "restaurant_ui";
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +16,20 @@ class RestaurantsUi extends StatelessWidget {
               expandedHeight: 110,
               toolbarHeight: 80,
               leadingWidth: 0,
+              actions: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, SearchRestaurantUi.routeName);
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.only(right: 20),
+                    child: Icon(
+                      Icons.search,
+                      color: secondaryColor,
+                    ),
+                  ),
+                )
+              ],
               flexibleSpace: FlexibleSpaceBar(
                 titlePadding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -26,11 +40,11 @@ class RestaurantsUi extends StatelessWidget {
                   children: [
                     Text(
                       "Restaurant",
-                      style: textTheme(context).headline6,
+                      style: textTheme(context).titleLarge?.copyWith(color: secondaryColor),
                     ),
                     Text(
                       "Recommended restaurant for you!",
-                      style: textTheme(context).subtitle1,
+                      style: textTheme(context).titleMedium?.copyWith(color: secondaryColor),
                     )
                   ],
                 ),
@@ -38,119 +52,51 @@ class RestaurantsUi extends StatelessWidget {
             ),
           ];
         },
-        body: FutureBuilder<String>(
-            future: DefaultAssetBundle.of(context)
-                .loadString('assets/local_restaurant.json'),
-            builder: (context, snapshot) {
-              if (snapshot.data == null) {
-                return const CircularProgressIndicator();
-              }
-              final List<Restaurant> restaurants =
-                  Restaurant.parseRestaurant(snapshot.data);
-              return ListView(
-                padding: const EdgeInsets.only(bottom: 40, top: 10),
-                children: [
-                  Column(
-                    children: List.generate(
-                      restaurants.length,
-                      (index) => Builder(builder: (context) {
-                        Restaurant restaurantItem = restaurants[index];
-                        return _RestaurantItemWidget(
-                            restaurantItem: restaurantItem);
-                      }),
-                    ),
-                  ),
-                ],
+        body: Consumer<RestaurantProvider>(
+          builder: (context, value, _) {
+            if (value.restaurantsState == ResultState.loading) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: primaryColor,
+                ),
               );
-            }),
-      ),
-    );
-  }
-}
-
-class _RestaurantItemWidget extends StatelessWidget {
-  const _RestaurantItemWidget({
-    Key? key,
-    required this.restaurantItem,
-  }) : super(key: key);
-
-  final Restaurant restaurantItem;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      // height: (widthLayout(context) * 0.25) / 1.2,
-      child: MaterialButton(
-        padding: const EdgeInsets.symmetric(horizontal: defaultMargin)
-            .copyWith(bottom: 15),
-        onPressed: () {
-          Navigator.pushNamed(
-            context,
-            DetailRestaurantUi.routeName,
-            arguments: DetailRestaurantUi(
-              restaurant: restaurantItem,
-            ),
-          );
-        },
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Hero(
-              tag: restaurantItem.pictureId,
-              child: Container(
-                width: widthLayout(context) * 0.25,
-                constraints: const BoxConstraints(maxWidth: 300),
-                child: AspectRatio(
-                  aspectRatio: 1.2,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      restaurantItem.pictureId,
-                      fit: BoxFit.cover,
+            } else if (value.restaurantsState == ResultState.error) {
+              return Center(
+                  child: Text(
+                value.message,
+                style: textTheme(context).bodyMedium,
+              ));
+            } else if (value.restaurantsState == ResultState.noData) {
+              return Center(
+                  child: Text(
+                value.message,
+                style: textTheme(context).bodyMedium,
+              ));
+            }
+            return ListView(
+              padding: const EdgeInsets.only(bottom: 40, top: 10),
+              children: [
+               const SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  children: List.generate(
+                    value.restaurants.length,
+                    (index) => Builder(
+                      builder: (context) {
+                        Restaurant restaurantItem = value.restaurants[index];
+                        return RestaurantItemWidget(
+                            restaurantItem: restaurantItem);
+                      },
                     ),
                   ),
                 ),
-              ),
-            ),
-            const SizedBox(
-              width: 15,
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        restaurantItem.name,
-                        style: textTheme(context)
-                            .bodyText2!
-                            .copyWith(fontWeight: FontWeight.bold),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      TitleIconWidget(
-                        context,
-                        title: restaurantItem.city,
-                        icon: Icons.location_pin,
-                      ),
-                    ],
-                  ),
-                  TitleIconWidget(context,
-                      title: restaurantItem.rating.toString(),
-                      titleStyle: textTheme(context).caption!.copyWith(
-                          fontWeight: FontWeight.bold, color: secondaryColor),
-                      icon: Icons.star),
-                ],
-              ),
-            )
-          ],
+              ],
+            );
+          },
         ),
       ),
     );
   }
 }
+

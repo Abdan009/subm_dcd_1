@@ -2,34 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 const double defaultMargin = 20;
-const Color primaryColor = Color.fromARGB(255, 255, 255, 255);
-const Color secondaryColor = Color(0xFFFF7600);
+const Color primaryColor = Color(0xFFFF7600) ;
+const Color secondaryColor =Color.fromARGB(255, 255, 255, 255);
+const Color backgroundColor = Color(0xFFE5E5E5);
+const Color blackColor = Colors.black;
+const Color dividerColor = Color.fromARGB(255, 241, 239, 239);
+
 
 final TextTheme myTextTheme = TextTheme(
-  headline1: GoogleFonts.poppins(
+  displayLarge: GoogleFonts.poppins(
       fontSize: 92, fontWeight: FontWeight.w300, letterSpacing: -1.5),
-  headline2: GoogleFonts.poppins(
+  displayMedium: GoogleFonts.poppins(
       fontSize: 57, fontWeight: FontWeight.w300, letterSpacing: -0.5),
-  headline3:
+  displaySmall:
       GoogleFonts.poppins(fontSize: 46, fontWeight: FontWeight.w400),
-  headline4: GoogleFonts.poppins(
+  headlineMedium: GoogleFonts.poppins(
       fontSize: 32, fontWeight: FontWeight.w400, letterSpacing: 0.25),
-  headline5:
+  headlineSmall:
       GoogleFonts.poppins(fontSize: 23, fontWeight: FontWeight.w400),
-  headline6: GoogleFonts.poppins(
+  titleLarge: GoogleFonts.poppins(
       fontSize: 19, fontWeight: FontWeight.w500, letterSpacing: 0.15),
-  subtitle1: GoogleFonts.poppins(
+  titleMedium: GoogleFonts.poppins(
       fontSize: 15, fontWeight: FontWeight.w400, letterSpacing: 0.15),
-  subtitle2: GoogleFonts.poppins(
+  titleSmall: GoogleFonts.poppins(
       fontSize: 13, fontWeight: FontWeight.w500, letterSpacing: 0.1),
-  bodyText1: GoogleFonts.poppins(
+  bodyLarge: GoogleFonts.poppins(
       fontSize: 16, fontWeight: FontWeight.w400, letterSpacing: 0.5),
-  bodyText2: GoogleFonts.poppins(
+  bodyMedium: GoogleFonts.poppins(
       fontSize: 14, fontWeight: FontWeight.w400, letterSpacing: 0.25),
-  button: GoogleFonts.poppins(
+  labelLarge: GoogleFonts.poppins(
       fontSize: 14, fontWeight: FontWeight.w500, letterSpacing: 1.25),
-  caption: GoogleFonts.poppins(
+  bodySmall: GoogleFonts.poppins(
       fontSize: 12, fontWeight: FontWeight.w400, letterSpacing: 0.4),
-  overline: GoogleFonts.poppins(
+  labelSmall: GoogleFonts.poppins(
       fontSize: 10, fontWeight: FontWeight.w400, letterSpacing: 1.5),
 );
